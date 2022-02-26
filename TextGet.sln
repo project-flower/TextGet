@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextGet", "TextGet\TextGet.csproj", "{9361F1DD-E559-4E54-85A0-68A29D1E80E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9361F1DD-E559-4E54-85A0-68A29D1E80E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9361F1DD-E559-4E54-85A0-68A29D1E80E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9361F1DD-E559-4E54-85A0-68A29D1E80E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9361F1DD-E559-4E54-85A0-68A29D1E80E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A571D47B-C4E0-41CD-923D-BC6187E94A34}
+	EndGlobalSection
+EndGlobal
