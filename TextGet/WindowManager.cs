@@ -11,6 +11,12 @@ namespace TextGet
 {
     internal static class WindowManager
     {
+        #region Private Fields
+
+        private static int zOrder = 0;
+
+        #endregion
+
         #region Public Properties
 
         public static bool UseWindowMessageGetText { get; set; } = false;
@@ -22,8 +28,9 @@ namespace TextGet
         public static WindowStatus[] CollectWindows(out Bitmap bitmap, out Rectangle totalScreenSize)
         {
             var result = new List<WindowStatus>();
-            var handles = new List<IntPtr>();
-            GCHandle allocated = GCHandle.Alloc(handles);
+            var windows = new List<(IntPtr, int)>();
+            GCHandle allocated = GCHandle.Alloc(windows);
+            zOrder = -1;
 
             try
             {
@@ -38,13 +45,13 @@ namespace TextGet
                 }
             }
 
-            foreach (IntPtr handle in handles)
+            foreach ((IntPtr, int) window in windows)
             {
-                if (DwmApi.DwmGetWindowAttribute(handle, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS, out RECT rect, Marshal.SizeOf(typeof(RECT))) == 0)
+                if (DwmApi.DwmGetWindowAttribute(window.Item1, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS, out RECT rect, Marshal.SizeOf(typeof(RECT))) == 0)
                 {
                     int top = rect.Top;
                     int left = rect.Left;
-                    result.Add(new WindowStatus(handle, new Rectangle(left, top, Math.Abs(rect.Right - left), Math.Abs(rect.Bottom - top))));
+                    result.Add(new WindowStatus(window.Item1, new Rectangle(left, top, Math.Abs(rect.Right - left), Math.Abs(rect.Bottom - top)), window.Item2));
                 }
             }
 
@@ -149,12 +156,13 @@ namespace TextGet
 
         private static bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam)
         {
+            ++zOrder;
             GCHandle gcHandle = GCHandle.FromIntPtr(lParam);
-            List<IntPtr> handles;
+            List<(IntPtr, int)> windows;
 
             try
             {
-                handles = (List<IntPtr>)gcHandle.Target;
+                windows = (List<(IntPtr, int)>)gcHandle.Target;
             }
             catch
             {
@@ -171,7 +179,7 @@ namespace TextGet
                 return true;
             }
 
-            handles.Add(hWnd);
+            windows.Add((hWnd, zOrder));
             return true;
         }
 

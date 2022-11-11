@@ -119,11 +119,6 @@ namespace TextGet
             return new Rectangle(pictureBox.PointToClient(rectangle.Location), rectangle.Size);
         }
 
-        private bool SmallerThan(Rectangle rectangle1, Rectangle rectangle2)
-        {
-            return (rectangle1.Width * rectangle1.Height) < (rectangle2.Width * rectangle2.Height);
-        }
-
         #endregion
 
         // Designer's Methods
@@ -172,17 +167,18 @@ namespace TextGet
 
             for (int i = 0; i < windows.Length; ++i)
             {
-                Rectangle window = windows[i].Bounds;
+                WindowStatus window = windows[i];
+                Rectangle bounds = window.Bounds;
                 Point point = pictureBox.PointToScreen(e.Location);
                 int x = point.X;
                 int y = point.Y;
 
-                if (x < window.Left) continue;
-                if (y < window.Top) continue;
-                if (x > window.Right) continue;
-                if (y > window.Bottom) continue;
+                if (x < bounds.Left) continue;
+                if (y < bounds.Top) continue;
+                if (x > bounds.Right) continue;
+                if (y > bounds.Bottom) continue;
 
-                if (candidate >= 0 && !SmallerThan(window, windows[candidate].Bounds))
+                if (candidate >= 0 && (window.ZOrder > windows[candidate].ZOrder))
                 {
                     continue;
                 }
