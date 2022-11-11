@@ -13,6 +13,7 @@ namespace TextGet
     {
         #region Private Fields
 
+        private static readonly WNDENUMPROC wndEnumProc;
         private static int zOrder = 0;
 
         #endregion
@@ -20,6 +21,15 @@ namespace TextGet
         #region Public Properties
 
         public static bool UseWindowMessageGetText { get; set; } = false;
+
+        #endregion
+
+        #region Static Methods
+
+        static WindowManager()
+        {
+            wndEnumProc = new WNDENUMPROC(EnumWindowsProc);
+        }
 
         #endregion
 
@@ -34,7 +44,6 @@ namespace TextGet
 
             try
             {
-                var wndEnumProc = new WNDENUMPROC(EnumWindowsProc);
                 User32.EnumWindows(wndEnumProc, GCHandle.ToIntPtr(allocated));
             }
             finally
